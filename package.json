@@ -1,0 +1,30 @@
+{
+  "name": "@dpack/feed",
+  "version": "0.1.1",
+  "description": "Command CLI For Viewing a dPack's History",
+  "contributors": [
+    "Jared Rice Sr. <jared@dwebs.io>",
+    "Distributed Webs Project, LLC. <labs@distributedwebs.org>"
+  ],
+  "bin": {
+    "dpack-feed": "./cli.js"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "dependencies": {
+    "@dpack/core": "dpacks/core#master",
+    "@dpack/logger": "dpacks/logger#master",
+    "@dwcore/rem": "dwcore/rem#master",
+    "minimist": "^1.2.0",
+    "prettier-bytes": "^1.0.4"
+  },
+  "devDependencies": {
+    "standard": "*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
