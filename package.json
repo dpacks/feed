@@ -17,7 +17,7 @@
   "dependencies": {
     "@dpack/core": "dpacks/core#master",
     "@dpack/logger": "dpacks/logger#master",
-    "@dwcore/rem": "dwcore/rem#master",
+    "@dwcore/rem": "*",
     "minimist": "^1.2.0",
     "prettier-bytes": "^1.0.4"
   },
