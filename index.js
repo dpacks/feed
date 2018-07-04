@@ -3,7 +3,7 @@ var prettyBytes = require('prettier-bytes')
 var dPackLogger = require('@dpack/logger')
 var output = require('@dpack/logger/result')
 var DPack = require('@dpack/core')
-var dwrem = require('@dwcore/rem')
+var dwrem = require('@ddatabase/ddb-rem')
 
 module.exports = function (opts) {
   var usage = 'Usage: dpack-feed [key|dir] [--live,-l]'
@@ -112,7 +112,7 @@ module.exports = function (opts) {
       if (state.opts.key) return 'Connecting to the dWeb network...'
       return 'Reading dPack history...'
     }
-    return output`
+    return output(`
       ${state.log.join('\n')}
       ${state.offline
           ? state.exiting
@@ -128,6 +128,6 @@ module.exports = function (opts) {
       Blocks:
       - Metadata ${state.dpack.vault.metadata.length}
       - Content ${state.dpack.vault.content.length}
-    `
+    `)
   }
 }
