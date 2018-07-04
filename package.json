@@ -1,6 +1,6 @@
 {
   "name": "@dpack/feed",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Command CLI For Viewing a dPack's History",
   "contributors": [
     "Jared Rice Sr. <jared@dwebs.io>",
@@ -15,9 +15,9 @@
     "test": "standard"
   },
   "dependencies": {
+    "@ddatabase/ddb-rem": "*",
     "@dpack/core": "dpacks/core#master",
     "@dpack/logger": "dpacks/logger#master",
-    "@dwcore/rem": "*",
     "minimist": "^1.2.0",
     "prettier-bytes": "^1.0.4"
   },
