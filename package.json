@@ -1,6 +1,6 @@
 {
   "name": "@dpack/feed",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "Command CLI For Viewing a dPack's History",
   "contributors": [
     "Jared Rice Sr. <jared@dwebs.io>",
