@@ -2,7 +2,7 @@ var fs = require('fs')
 var prettyBytes = require('prettier-bytes')
 var dPackLogger = require('@dpack/logger')
 var output = require('@dpack/logger/result')
-var DPack = require('@dpack/core')
+var DWeb = require('@dpack/core')
 var dwrem = require('@ddatabase/ddb-rem')
 
 module.exports = function (opts) {
@@ -29,7 +29,7 @@ module.exports = function (opts) {
       dir = process.cwd()
     }
 
-    DPack(dir, state.opts, function (err, dpack) {
+    DWeb(dir, state.opts, function (err, dweb) {
       if (err && err.name === 'MissingError') {
         bus.clear()
         console.error('No dPack found in', dir)
@@ -41,18 +41,18 @@ module.exports = function (opts) {
         process.exit(1)
       }
 
-      state.dpack = dpack
+      state.dweb = dweb
       state.log = []
       state.puts = 0
       state.dels = 0
       bus.on('update', function () {
-        state.verLen = state.dpack.vault.version.toString().length
+        state.verLen = state.dweb.vault.version.toString().length
         state.zeros = new Array(state.verLen).join('0')
       })
       bus.emit('render')
 
-      dpack.trackStats()
-      if (dpack.writable) {
+      dweb.trackStats()
+      if (dweb.writable) {
         bus.emit('update')
         return run()
       }
@@ -60,18 +60,18 @@ module.exports = function (opts) {
       // var waitTimeout TODO
       state.offline = true
 
-      dpack.joinNetwork(function () {
-        if (!state.opts.live && state.offline && !dpack.network.connecting) exit()
+      dweb.joinNetwork(function () {
+        if (!state.opts.live && state.offline && !dweb.network.connecting) exit()
       }).once('connection', function () {
         state.offline = false
         // clearTimeout(waitTimeout) // TODO: close if not live
       })
-      dpack.vault.ready(function () {
+      dweb.vault.ready(function () {
         bus.emit('update')
       })
-      dpack.vault.on('content', function () {
+      dweb.vault.on('content', function () {
         bus.emit('update')
-        dpack.vault.content.update()
+        dweb.vault.content.update()
       })
 
       if (!state.opts.live) {
@@ -80,11 +80,11 @@ module.exports = function (opts) {
       }
 
       if (!state.opts.key) run()
-      else dpack.vault.metadata.update(run)
+      else dweb.vault.metadata.update(run)
 
       function run () {
         state.running = true
-        var rs = dpack.vault.history({ live: state.opts.live || state.offline })
+        var rs = dweb.vault.history({ live: state.opts.live || state.offline })
         rs.on('data', function (data) {
           var version = `${state.zeros.slice(0, state.verLen - data.version.toString().length)}${data.version}`
           var msg = `${version} [${data.type}] ${data.name}`
@@ -120,14 +120,14 @@ module.exports = function (opts) {
             : '...\n\nConnecting to network to update & verify log...'
           : '\nLog synced with network'}
 
-      Vault has ${state.dpack.vault.version} changes (puts: +${state.puts}, dels: -${state.dels})
-      Current Size: ${prettyBytes(state.dpack.stats.get().byteLength)}
+      Vault has ${state.dweb.vault.version} changes (puts: +${state.puts}, dels: -${state.dels})
+      Current Size: ${prettyBytes(state.dweb.stats.get().byteLength)}
       Total Size:
-      - Metadata ${prettyBytes(state.dpack.vault.metadata.byteLength)}
-      - Content ${prettyBytes(state.dpack.vault.content.byteLength)}
+      - Metadata ${prettyBytes(state.dweb.vault.metadata.byteLength)}
+      - Content ${prettyBytes(state.dweb.vault.content.byteLength)}
       Blocks:
-      - Metadata ${state.dpack.vault.metadata.length}
-      - Content ${state.dpack.vault.content.length}
+      - Metadata ${state.dweb.vault.metadata.length}
+      - Content ${state.dweb.vault.content.length}
     `)
   }
 }
